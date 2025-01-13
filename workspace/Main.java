@@ -1,3 +1,6 @@
+// Zoe McGee
+// January 13, 2025
+// 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -17,6 +20,7 @@ public class Main
   private ImageIcon img;
   private JLabel imageLabel;
   private JLabel outputLabel;
+  private JTextField abcdefg;
   
   public static void main(String[] args) {
     // Create the GUI
@@ -38,24 +42,25 @@ public class Main
     }
     
     // Write a for loop that goes through the countryArray.
-    // for(int i ....) {
+    for(int i = 0; i < countryArray.length; i++) {
     // Do the following inside the loop
       String input = scan.nextLine();
       String[] data = input.split(",");
       System.out.println("Read in " + data[0]);
       // inside the loop, create a new Country using your constructor with 4 arguments and pass in data[0], data[1], data[2], data[3] as arguments.
+      Country c = new Country(data[0], data[1], data[2], data[3]);
      // inside the loop, set countryArray[i] to the created Country object
-     
-    
+     countryArray[i] = c;
+    }
   }
 
   /* showCountry() will show the image associated with the current country. It should get the country at index from the countryArray. It should use its get method to get its image file name and use the code below to put the image in the GUI.
   */
   public void showCountry() {
     // Get the country at index from countryArray
-    
+    Country c = countryArray[index];
     // Use its get method to get the its image file name and save it into imagefile variable below instead of worldmap.jpg.
-    String imagefile = "worldmap.jpg";
+    String imagefile = c.getImage();
     // Use the following code to create an new Image Icon and put it into the GUI
     img = new ImageIcon("/workspaces/Countries/workspace/"+imagefile);
     imageLabel.setIcon(img);
@@ -64,22 +69,36 @@ public class Main
   /* nextButton should increment index. If the index is greater than 9, reset it back to 0. Clear the outputLabel to empty string using setText, and call showCountry();*/
   public void nextButtonClick()
   {
-    
+    if(index >= 9){
+      index = 0;
+    } else {
+      index++;
+    }
+    outputLabel.setText("What country is this?");
+    showCountry();
+    abcdefg.setText("");
   }
   
   /* reviewButton should get the country at index from the countryArray, call its toString() method and save the result, print it out with System.out.println and as an argument to outputLabel.setText( text to print out ); */
   public void reviewButtonClick()
   {
-     
+    Country c1 = countryArray[index];
+    System.out.println(c1.toString());
+    outputLabel.setText(c1.toString());
   }
 
   /* quizButton should clear the outputLabel (outputLabel.setText to empty string), get the country at index from countryArray, print out a question about it like What country is this? and/or What's this country's capital?. Get the user's answer using scan.nextLine() and check if it is equal to the country's data using its get methods and print out correct or incorrect.
   */
   public void quizButtonClick()
   {
-    Scanner scan = new Scanner(System.in); 
-    
-    
+    outputLabel.setText("What country is this?");
+    Country c = countryArray[index];
+    System.out.println(abcdefg.getText());
+    if(abcdefg.getText().toLowerCase().equals(c.getName().toLowerCase())){
+      outputLabel.setText("Correct!");
+    } else {
+      outputLabel.setText("Incorrect!");
+    }
     
   }
 
@@ -109,6 +128,9 @@ public Main() {
         jFrame.add(imageLabel);
         jFrame.add(outputLabel);
         jFrame.setVisible(true);
+
+        abcdefg = new JTextField(20);
+        jFrame.add(abcdefg);
         // add event listener for button click
         reviewButton.addActionListener(new ActionListener() {
     public void actionPerformed(ActionEvent e) 
